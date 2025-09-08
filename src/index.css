@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Sansita:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700;1,800;1,900&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.barra {
+  background: #ffbdc9;
+  width: 100%;
+  height: 20vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.barra img {
+  width: 60px;
+  height: auto;
+}
+nav {
+  background: #fff;
+  border-radius: 50px;
+  padding: 10px 40px; /* más espacio lateral */
+  box-shadow: 0 25px 20px rgba(0, 0, 0, 0.4);
+
+  display: flex; /* 👈 convierte el nav en contenedor flex */
+  justify-content: space-between; /* logo a la izquierda, menú a la derecha */
+  align-items: center; /* 👈 centra logo y texto en la misma línea */
+}
+
+nav .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* espacio entre logo e imagen/texto */
+}
+
+nav ul {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  list-style: none;
+  padding: 13px 20px;
+  margin: 0 5px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #777;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  transition: color 0.5s;
+}
+
+nav ul li::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 100%;
+  left: 50%;
+  border-radius: 30px;
+  background: #f44566;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  opacity: 0;
+  transition: top 0.5s, opacity 0.5s;
+}
+nav ul li:hover {
+  color: #fff;
+}
+nav ul li:hover::after {
+  top: 50%;
+  opacity: 1;
+}
+
+/* Contenedor del texto principal */
+.texto-principal {
+  text-align: center;
+  margin-top: 80px; /* 👈 Ajustá este valor para más o menos separación */
+  font-family: 'Sansita', sans-serif;
+  color: #000;
+}
+
+.texto-principal h1 {
+  font-size: 3.2em;
+  margin-bottom: 15px;
+}
+
+.texto-principal p {
+  font-size: 1.2em;
+  color: #333;
+}
