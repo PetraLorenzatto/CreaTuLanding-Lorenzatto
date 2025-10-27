@@ -1,5 +1,4 @@
-
-function Item({ id, title, img, price }) {
+function Item({ title, img, price }) {
     return (
         <div className="item-card">
             <h2 className="item-card-title">{title}</h2>
@@ -13,4 +12,5 @@ function Item({ id, title, img, price }) {
         </div>
     );
 }
+
 export default Item;

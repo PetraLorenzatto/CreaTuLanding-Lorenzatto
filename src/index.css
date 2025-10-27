@@ -75,6 +75,25 @@ nav ul li:hover::after {
   opacity: 1;
 }
 
+/* === Ajuste Brillo Salvaje: enlaces del NavBar === */
+nav ul li a {
+  text-decoration: none;        /* sin subrayado */
+  color: #777;                  /* igual que tu color de texto actual */
+  font-weight: 500;
+  transition: color 0.3s ease;  /* animación suave */
+}
+
+/* Al pasar el mouse */
+nav ul li a:hover {
+  color: #f44566;               /* fucsia Brillo Salvaje */
+}
+
+/* Cuando el enlace está activo */
+nav ul li a.active {
+  color: #f44566;
+  font-weight: 600;
+}
+
 
 .texto-principal {
   text-align: center;
