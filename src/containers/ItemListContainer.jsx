@@ -1,19 +1,44 @@
-import { useEffect, useState } from "react";
-import getMockAPIData from "../data/mockAPI";
-import ItemList from "../components/ItemList";
+import { useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
+import { fetchProducts } from "../data/mockAPI";
+import ItemList from "../components/ItemList"; // ✅ listado (no ItemDetail)
 
-export default function ItemListContainer({ greeting }) {
-    const [items, setItems] = useState([]);
+function filterByRouteCategory(items, routeCat) {
+  if (!routeCat || routeCat === "Todos") return items;
+  const key = routeCat.toLowerCase();
+  return items.filter((p) => {
+    const cat = (p.category || "").toLowerCase();
+    const title = (p.title || "").toLowerCase();
+    if (key.startsWith("bota")) return cat.includes("bota") || title.includes("bota");
+    if (key.startsWith("sombr")) return cat.includes("sombr") || title.includes("sombr");
+    if (key.startsWith("acces")) return cat.includes("acces") || title.includes("cintu");
+    return cat.includes(key);
+  });
+}
 
-    useEffect(() => {
-        getMockAPIData().then((data) => setItems(data));
-    }, []);
+export default function ItemListContainer({ greeting = "¡Bienvenidos a Brillo Salvaje!" }) {
+  const { id: routeCategory } = useParams();
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    return (
-        <section className="texto-principal">
-            <h2>{greeting} ✨🤠</h2>
-            <h4>Nuestros productos ✨</h4>
-            <ItemList items={items} />
-        </section>
-    );
+  useEffect(() => {
+    setLoading(true);
+    fetchProducts().then((data) => {
+      setItems(data);
+      setLoading(false);
+    });
+  }, []);
+
+  const filtered = useMemo(() => filterByRouteCategory(items, routeCategory), [items, routeCategory]);
+
+  return (
+    <main style={{ padding: 16 }}>
+      <section className="texto-principal">
+        <h1>{greeting}</h1>
+        <p>Descubrí nuestras botas, sombreros y accesorios con alma western ✨</p>
+      </section>
+
+      {loading ? <p>Cargando…</p> : <ItemList items={filtered} />}
+    </main>
+  );
 }

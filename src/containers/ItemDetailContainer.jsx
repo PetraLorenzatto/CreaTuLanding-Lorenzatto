@@ -1,12 +1,24 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { fetchProductById } from "../data/mockAPI";
+import ItemDetail from "../components/ItemDetail"; // ✅ acá sí
 
-import { useParams } from 'react-router-dom'
+export default function ItemDetailContainer() {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-export default function ItemDetailContainer(){
-  const { id } = useParams()
+  useEffect(() => {
+    setLoading(true);
+    fetchProductById(id).then((data) => {
+      setProduct(data || null);
+      setLoading(false);
+    });
+  }, [id]);
+
   return (
     <main style={{ padding: 16 }}>
-      <h1>Detalle del producto</h1>
-      <p>ID: {id}</p>
+      {loading ? <p>Cargando…</p> : <ItemDetail product={product} />}
     </main>
-  )
+  );
 }
