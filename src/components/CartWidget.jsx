@@ -1,9 +1,22 @@
-import cartwidget from  '../assets/carrito.png';
+import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+
 export default function CartWidget() {
+    const { totals } = useCart();
     return (
-        <div>
-            <img src={cartwidget} alt="Cart" style={{ width: '30px', height: '30px' }} />
-            <span style={{ marginLeft: '5px', fontWeight: 'bold' }}>2</span>
-        </div>
+        <Link
+            to="/cart"
+            style={{
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+            }}
+        >
+            <span style={{ fontSize: 26, color: "#bd8c4a" }}>🛒</span>
+            <span style={{ color: "#f44566", fontWeight: 700 }}>
+                {totals.quantity}
+            </span>
+        </Link>
     );
 }

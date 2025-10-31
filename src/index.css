@@ -1,9 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Sansita:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700;1,800;1,900&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  font-family: 'Sansita', sans-serif;
+  background: #fff;
+}
+
+/* =========================
+   BARRA ROSA SUPERIOR
+   ========================= */
 .barra {
   background: #ffbdc9;
   width: 100%;
@@ -12,32 +22,38 @@
   align-items: center;
   justify-content: center;
 }
-.barra img {
-  width: 60px;
-  height: auto;
-}
+
+/* =========================
+   NAV FLOTANTE BLANCO
+   ========================= */
 nav {
   background: #fff;
   border-radius: 50px;
-  padding: 10px 40px; 
+  padding: 10px 40px;
   box-shadow: 0 25px 20px rgba(0, 0, 0, 0.4);
-
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
 }
 
 nav .logo {
   display: flex;
   align-items: center;
-  gap: 10px; /* espacio entre logo e imagen/texto */
+  gap: 10px;
 }
 
+nav .logo img {
+  width: 70px;
+}
+
+/* LINKS DEL NAV */
 nav ul {
   display: flex;
   align-items: center;
   margin: 0;
   padding: 0;
+  gap: 10px;
 }
 
 nav ul li {
@@ -53,6 +69,7 @@ nav ul li {
   transition: color 0.5s;
 }
 
+/* efecto fucsia ovalado al pasar */
 nav ul li::after {
   content: '';
   position: absolute;
@@ -67,75 +84,260 @@ nav ul li::after {
   opacity: 0;
   transition: top 0.5s, opacity 0.5s;
 }
+
 nav ul li:hover {
   color: #fff;
 }
+
 nav ul li:hover::after {
   top: 50%;
   opacity: 1;
 }
 
-/* === Ajuste Brillo Salvaje: enlaces del NavBar === */
+/* enlaces react-router del nav */
 nav ul li a {
-  text-decoration: none;        /* sin subrayado */
-  color: #777;                  /* igual que tu color de texto actual */
+  text-decoration: none;
+  color: #777;
   font-weight: 500;
-  transition: color 0.3s ease;  /* animación suave */
+  transition: color 0.3s ease;
 }
 
-/* Al pasar el mouse */
-nav ul li a:hover {
-  color: #f44566;               /* fucsia Brillo Salvaje */
-}
-
-/* Cuando el enlace está activo */
+nav ul li a:hover,
 nav ul li a.active {
   color: #f44566;
   font-weight: 600;
 }
 
-
-.texto-principal {
-  text-align: center;
-  margin-top: 80px; 
-  font-family: 'Sansita', sans-serif;
-  color: #000;
+/* carrito en nav */
+.cart-widget {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #b3713f;
+  font-weight: 700;
 }
 
+/* =========================
+   TITULOS PRINCIPALES
+   ========================= */
+.texto-principal {
+  text-align: center;
+  margin-top: 80px;
+  color: #000;
+}
 .texto-principal h1 {
   font-size: 3.2em;
   margin-bottom: 15px;
 }
-
 .texto-principal p {
   font-size: 1.2em;
   color: #333;
 }
 
-/* === LOADER BRILLO SALVAJE === */
-.loader-container {
+/* =========================
+   GRID DE PRODUCTOS
+   ========================= */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 36px;
+  padding: 60px 80px;
+}
+
+/* =========================
+   TARJETA PRODUCTO BRILLO SALVAJE
+   ========================= */
+.product-card {
+  background: #fff;
+  border-radius: 40px; /* combinando con el nav */
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s ease;
+  border: 2px solid transparent;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  min-height: 360px;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(244, 69, 102, 0.25);
+  border-color: rgba(244, 69, 102, 0.25);
+}
+
+/* contenedor de la imagen */
+.product-card__img-wrap {
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(180deg, #ffdbe6 0%, #fff 100%);
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
+  border-bottom: 4px solid #ffe5ec;
+  overflow: hidden;
+}
+
+.product-card__img-wrap img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-card__img-wrap img {
+  transform: scale(1.05);
+}
+
+/* cuerpo */
+.product-card__body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* categoría con pill fucsia */
+.product-card__category {
+  display: inline-block;
+  background: rgba(244, 69, 102, 0.1);
   color: #f44566;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
   font-weight: 600;
-  font-family: 'Sansita', sans-serif;
+  letter-spacing: .03em;
+  width: fit-content;
 }
 
-.loader {
-  border: 4px solid #ffd6e0;
-  border-top: 4px solid #f44566;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 10px;
-  box-shadow: 0 0 10px rgba(244, 69, 102, 0.3);
+/* título */
+.product-card__title {
+  font-size: 1.15rem;
+  line-height: 1.2;
+  color: #222;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* precio */
+.product-card__price {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1d1d1d;
+}
+
+/* botón */
+.product-card__btn {
+  margin-top: 12px;
+  background: #f44566;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  transition: .15s;
+}
+
+.product-card__btn:hover {
+  background: #f01f45;
+  box-shadow: 0 6px 15px rgba(244, 69, 102, 0.3);
+}
+
+/* =========================
+   DETALLE DE PRODUCTO
+   ========================= */
+.item-detail-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 40px 80px;
+}
+
+.item-detail-img {
+  width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.item-detail-info h1 {
+  margin-top: 0;
+}
+
+.item-detail-category {
+  color: #777;
+  margin-bottom: 8px;
+}
+
+.item-detail-price {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.item-detail-desc {
+  margin-top: 10px;
+  color: #444;
+}
+
+.item-detail-size-block {
+  margin-top: 16px;
+}
+
+.item-detail-size-title {
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.talle-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.talle-btn {
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,.08);
+  background: #fff;
+  cursor: pointer;
+  transition: .15s;
+}
+
+.talle-btn.active {
+  border: 2px solid #f44566;
+  font-weight: 700;
+}
+
+.talle-btn.disabled {
+  background: #f6f6f6;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.item-detail-size-hint {
+  display: block;
+  margin-top: 6px;
+  color: #777;
+}
+
+.item-detail-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.btn-primary {
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #f44566;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.btn-secondary {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  text-decoration: none;
+  color: #333;
 }

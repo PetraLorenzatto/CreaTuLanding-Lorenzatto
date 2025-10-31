@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchProductById } from "../data/mockAPI";
-import ItemDetail from "../components/ItemDetail"; // ✅ acá sí
+import Loader from "../components/Loader";
+// 👇 OBLIGO a usar este ItemDetail
+import ItemDetail from "../components/ItemDetail";
+import { getProductById } from "../services/products";
 
 export default function ItemDetailContainer() {
   const { id } = useParams();
@@ -10,15 +12,16 @@ export default function ItemDetailContainer() {
 
   useEffect(() => {
     setLoading(true);
-    fetchProductById(id).then((data) => {
-      setProduct(data || null);
-      setLoading(false);
-    });
+    getProductById(id)
+      .then((data) => setProduct(data || null))
+      .finally(() => setLoading(false));
   }, [id]);
+
+  if (loading) return <Loader />;
 
   return (
     <main style={{ padding: 16 }}>
-      {loading ? <p>Cargando…</p> : <ItemDetail product={product} />}
+      <ItemDetail product={product} />
     </main>
   );
 }

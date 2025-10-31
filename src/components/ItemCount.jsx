@@ -1,23 +1,33 @@
 import { useState } from "react";
 
-export default function ItemCount({ stock = 1, initial = 1, onAdd }) {
+export default function ItemCount({ stock = 0, initial = 1, onAdd }) {
   const [qty, setQty] = useState(initial);
-  const canDec = qty > 1;
-  const canInc = qty < stock;
+
+  const inc = () => qty < stock && setQty(qty + 1);
+  const dec = () => qty > 1 && setQty(qty - 1);
 
   return (
-    <div style={{ display: "grid", gap: 10, maxWidth: 220 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 12, justifyContent: "center" }}>
-        <button onClick={() => canDec && setQty(qty - 1)} disabled={!canDec} style={{ width: 36, height: 36, borderRadius: 10, border: "1px solid #ddd", background: "#fff" }}>-</button>
-        <span style={{ minWidth: 36, textAlign: "center", fontWeight: 700 }}>{qty}</span>
-        <button onClick={() => canInc && setQty(qty + 1)} disabled={!canInc} style={{ width: 36, height: 36, borderRadius: 10, border: "1px solid #ddd", background: "#fff" }}>+</button>
+    <div style={{ marginTop: 16 }}>
+      <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+        <button onClick={dec}>-</button>
+        <span>{qty}</span>
+        <button onClick={inc}>+</button>
       </div>
-      <button onClick={() => onAdd?.(qty)} style={{ padding: "10px 14px", borderRadius: 12, background: "#f44566", color: "#fff", fontWeight: 700, border: "none" }}>
+      <button
+        style={{
+          marginTop: 10,
+          background: "#f44566",
+          color: "#fff",
+          border: "none",
+          padding: "8px 14px",
+          borderRadius: 10,
+          cursor: "pointer",
+        }}
+        onClick={() => onAdd(qty)}
+        disabled={stock === 0}
+      >
         Agregar al carrito
       </button>
-      <p style={{ margin: 0, textAlign: "center", color: "#777" }}>
-        Stock disponible: <strong>{stock}</strong>
-      </p>
     </div>
   );
 }
