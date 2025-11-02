@@ -1,14 +1,15 @@
-import NavBar from "./components/NavBar";
+// src/App.jsx
 import { Routes, Route } from "react-router-dom";
+
+import NavBar from "./components/NavBar";
 import ItemListContainer from "./containers/ItemListContainer";
 import ItemDetailContainer from "./containers/ItemDetailContainer";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
-import { CartProvider } from "./context/CartContext";
 
-function App() {
+export default function App() {
   return (
-    <CartProvider>
+    <>
       <NavBar />
       <Routes>
         <Route path="/" element={<ItemListContainer />} />
@@ -16,10 +17,8 @@ function App() {
         <Route path="/item/:id" element={<ItemDetailContainer />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="*" element={<ItemListContainer />} />
       </Routes>
-    </CartProvider>
+    </>
   );
 }
 
-export default App;

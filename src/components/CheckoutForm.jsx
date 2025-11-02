@@ -1,22 +1,73 @@
-
+// src/components/CheckoutForm.jsx
 import { useState } from "react";
 
-export default function CheckoutForm({ onConfirm, loading }) {
-  const [buyer, setBuyer] = useState({ name: "", phone: "", email: "" });
+export default function CheckoutForm({ onConfirm }) {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email1, setEmail1] = useState("");
+  const [email2, setEmail2] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!buyer.name || !buyer.phone || !buyer.email) return;
-    onConfirm(buyer);
+    if (!name || !phone || !email1 || !email2) {
+      alert("Completá todos los campos");
+      return;
+    }
+    if (email1 !== email2) {
+      alert("Los emails no coinciden");
+      return;
+    }
+    onConfirm({
+      name,
+      phone,
+      email: email1,
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: "grid", gap: 12, maxWidth: 420 }}>
-      <input type="text" placeholder="Nombre y apellido" value={buyer.name} onChange={(e) => setBuyer({ ...buyer, name: e.target.value })} required style={{ padding: "10px 12px", borderRadius: 10, border: "1px solid #ddd" }} />
-      <input type="tel" placeholder="Teléfono" value={buyer.phone} onChange={(e) => setBuyer({ ...buyer, phone: e.target.value })} required style={{ padding: "10px 12px", borderRadius: 10, border: "1px solid #ddd" }} />
-      <input type="email" placeholder="Email" value={buyer.email} onChange={(e) => setBuyer({ ...buyer, email: e.target.value })} required style={{ padding: "10px 12px", borderRadius: 10, border: "1px solid #ddd" }} />
-      <button type="submit" disabled={loading} style={{ padding: "10px 14px", borderRadius: 12, background: "#f44566", color: "#fff", fontWeight: 700, border: "none" }}>
-        {loading ? "Generando orden..." : "Confirmar compra"}
+    <form className="checkout-form" onSubmit={handleSubmit}>
+      <div className="checkout-form__group">
+        <label>Nombre y apellido</label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Ej: Venecia Lorenzatto"
+        />
+      </div>
+
+      <div className="checkout-form__group">
+        <label>Teléfono</label>
+        <input
+          type="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          placeholder="Ej: 3455 555555"
+        />
+      </div>
+
+      <div className="checkout-form__group">
+        <label>Email</label>
+        <input
+          type="email"
+          value={email1}
+          onChange={(e) => setEmail1(e.target.value)}
+          placeholder="tu@mail.com"
+        />
+      </div>
+
+      <div className="checkout-form__group">
+        <label>Confirmar email</label>
+        <input
+          type="email"
+          value={email2}
+          onChange={(e) => setEmail2(e.target.value)}
+          placeholder="Repetí tu mail"
+        />
+      </div>
+
+      <button type="submit" className="checkout-form__btn">
+        Confirmar compra
       </button>
     </form>
   );

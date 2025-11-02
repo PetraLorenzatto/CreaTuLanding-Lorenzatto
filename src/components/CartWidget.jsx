@@ -1,21 +1,16 @@
+// src/components/CartWidget.jsx
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 export default function CartWidget() {
-    const { totals } = useCart();
+    const { totals } = useCart();          // 👈 tomamos los totales del contexto
+    const count = totals?.totalItems || 0; // 👈 defensa por las dudas
+
     return (
-        <Link
-            to="/cart"
-            style={{
-                textDecoration: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: 6,
-            }}
-        >
-            <span style={{ fontSize: 26, color: "#bd8c4a" }}>🛒</span>
+        <Link to="/cart" className="cart-widget">
+            <span style={{ fontSize: "1.5rem" }}>🛒</span>
             <span style={{ color: "#f44566", fontWeight: 700 }}>
-                {totals.quantity}
+                {count}
             </span>
         </Link>
     );

@@ -1,72 +1,64 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+// src/context/CartContext.jsx
+import { createContext, useContext, useState, useMemo } from "react";
 
-const CartContext = createContext();
+const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
-    const [items, setItems] = useState(() => {
-        try {
-            return JSON.parse(localStorage.getItem("cart:items")) || [];
-        } catch {
-            return [];
-        }
+  const [cart, setCart] = useState([]);
+
+  const addItem = (product, qty) => {
+    const sizeKey = product.size || null;
+
+    setCart((prev) => {
+      // buscamos MISMO id + MISMO talle
+      const idx = prev.findIndex(
+        (p) => String(p.id) === String(product.id) && p.size === sizeKey
+      );
+
+      if (idx !== -1) {
+        const copy = structuredClone(prev);
+        copy[idx].qty = copy[idx].qty + qty;
+        return copy;
+      }
+
+      // si no está, lo agregamos con size
+      return [
+        ...prev,
+        {
+          ...product,
+          size: sizeKey,
+          qty,
+        },
+      ];
     });
+  };
 
-    useEffect(() => {
-        try {
-            localStorage.setItem("cart:items", JSON.stringify(items));
-        } catch { }
-    }, [items]);
-
-    // id + talle
-    const lineKey = (p) => `${p.id}__${p.size || "NOSIZE"}`;
-
-    const addItem = (product, qty = 1) => {
-        setItems((prev) => {
-            const found = prev.find((p) => lineKey(p) === lineKey(product));
-            if (found) {
-                return prev.map((p) =>
-                    lineKey(p) === lineKey(product) ? { ...p, qty: p.qty + qty } : p
-                );
-            }
-            return [
-                ...prev,
-                {
-                    id: product.id,
-                    title: product.title,
-                    price: product.price,
-                    img: product.img,
-                    size: product.size || null,
-                    qty,
-                },
-            ];
-        });
-    };
-
-    const removeItem = (id, size = null) => {
-        setItems((prev) =>
-            prev.filter(
-                (p) => !(p.id === id && (p.size || null) === (size || null))
-            )
-        );
-    };
-
-    const clear = () => setItems([]);
-
-    const totals = useMemo(
-        () => ({
-            quantity: items.reduce((a, it) => a + it.qty, 0),
-            amount: items.reduce((a, it) => a + it.qty * it.price, 0),
-        }),
-        [items]
+  const removeItem = (id, size = null) => {
+    setCart((prev) =>
+      prev.filter(
+        (p) => !(String(p.id) === String(id) && (p.size || null) === (size || null))
+      )
     );
+  };
 
-    return (
-        <CartContext.Provider
-            value={{ items, addItem, removeItem, clear, totals }}
-        >
-            {children}
-        </CartContext.Provider>
+  const clearCart = () => setCart([]);
+
+  const totals = useMemo(() => {
+    const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
+    const totalPrice = cart.reduce(
+      (acc, item) => acc + item.qty * Number(item.price),
+      0
     );
+    return { totalQty, totalPrice };
+  }, [cart]);
+
+  return (
+    <CartContext.Provider
+      value={{ cart, addItem, removeItem, clearCart, totals }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
 }
 
 export const useCart = () => useContext(CartContext);
